@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 
 <head>
     <meta charset="UTF-8">
@@ -10,7 +10,7 @@
 
 <body>
     <nav>
-        <a href="{{ route('home') }}">Accueil</a>
+        <a href="{{ route('/') }}">Accueil</a>
         <a href="{{ route('incidentTypes.index') }}">Types d'incidents</a>
     </nav>
 

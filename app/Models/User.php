@@ -12,6 +12,11 @@ class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
 
+    // enum role
+    public const ROLE_ADMIN = 1;
+    public const ROLE_COMMUNE = 2;
+    public const ROLE_HERO = 3;
+
     /**
      * The attributes that are mass assignable.
      *
@@ -21,6 +26,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'role_id'
     ];
 
     /**
@@ -41,4 +47,12 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    /**
+     * Get the incident types associated with the user.
+     */
+    public function incidentTypes()
+    {
+        return $this->belongsToMany(IncidentType::class);
+    }
 }
