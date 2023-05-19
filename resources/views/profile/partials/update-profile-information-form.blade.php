@@ -61,22 +61,27 @@
                 </div>
 
                 <!-- Incident Types -->
-                <x-input-label :value="__('Types d\'incidents')" />
-                @foreach ($incidentTypes as $incidentType)
-                    <div class="mt-2">
-                        <x-input-label for="{{ $incidentType->name }}" class="inline-flex items-center">
-                            <input type="checkbox" name="incident_types[]" id="{{ $incidentType->id }}"
-                                value="{{ $incidentType->id }}" class="form-checkbox"
-                                @if (in_array($incidentType->id, $userIncidentTypes)) checked @endif>
-                            <span class="ml-2">{{ $incidentType->libelle }}</span>
-                        </x-input-label>
-                    </div>
-                @endforeach
-                <x-input-error :messages="$errors->get('incident_types')" class="mt-2" />
+                <div class="mt-4">
+                    <x-input-label :value="__('Types d\'incidents')" />
+                    @foreach ($incidentTypes as $incidentType)
+                        <div class="mt-2">
+                            <x-input-label for="{{ $incidentType->name }}" class="inline-flex items-center">
+                                <input type="checkbox" name="incident_types[]" id="{{ $incidentType->id }}"
+                                    value="{{ $incidentType->id }}" class="form-checkbox"
+                                    @if (in_array($incidentType->id, $userIncidentTypes)) checked @endif>
+                                <span class="ml-2">{{ $incidentType->libelle }}</span>
+                            </x-input-label>
+                        </div>
+                    @endforeach
+                    <x-input-error :messages="$errors->get('incident_types')" class="mt-2" />
+                </div>
 
-                <div id="map" style="height: 400px;"></div>
-                <input type="hidden" name="latitude" id="latitude" value="{{ old('latitude', $user->latitude) }}">
-                <input type="hidden" name="longitude" id="longitude" value="{{ old('longitude', $user->longitude) }}">
+                <div class="mt-4">
+                    <x-input-label :value="__('Localisation')" />
+                    <div id="map" style="height: 400px;"></div>
+                    <input type="hidden" name="latitude" id="latitude" value="{{ old('latitude', $user->latitude) }}">
+                    <input type="hidden" name="longitude" id="longitude" value="{{ old('longitude', $user->longitude) }}">
+                </div>
             </div>
         @endhero
 

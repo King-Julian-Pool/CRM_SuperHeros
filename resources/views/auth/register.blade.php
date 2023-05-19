@@ -62,7 +62,7 @@
         </div>
 
         <!-- Hero -->
-        <div id="hero-container" class="mt-4" style="display:none;">
+        <div id="hero-container" class="mt-4">
 
             <!-- Telephone -->
             <div class="mt-4">
@@ -73,23 +73,29 @@
             </div>
 
             {{-- Types d'incident --}}
-            <x-input-label :value="__('Types d\'incident')" />
-            @foreach ($incidentTypes as $incidentType)
-                <div class="mt-2">
-                    <x-input-label for="{{ $incidentType->name }}" class="inline-flex items-center">
-                        <input type="checkbox" name="incident_types[]" id="{{ $incidentType->id }}"
-                            value="{{ $incidentType->id }}" class="form-checkbox">
-                        <span class="ml-2">{{ $incidentType->libelle }}</span>
-                    </x-input-label>
-                </div>
-            @endforeach
-            <x-input-error :messages="$errors->get('incident_types')" class="mt-2" />
+            <div class="mt-4">
+                <x-input-label :value="__('Types d\'incident')" />
+                @foreach ($incidentTypes as $incidentType)
+                    <div class="mt-2">
+                        <x-input-label for="{{ $incidentType->name }}" class="inline-flex items-center">
+                            <input type="checkbox" name="incident_types[]" id="{{ $incidentType->id }}"
+                                value="{{ $incidentType->id }}" class="form-checkbox">
+                            <span class="ml-2">{{ $incidentType->libelle }}</span>
+                        </x-input-label>
+                    </div>
+                @endforeach
+                <x-input-error :messages="$errors->get('incident_types')" class="mt-2" />
+            </div>
 
             {{-- carte --}}
-            <div id="map" style="height: 400px;"></div>
-            <input type="hidden" name="latitude" id="latitude">
-            <input type="hidden" name="longitude" id="longitude">
+            <div class="mt-4">
+                <x-input-label :value="__('Localisation')" />
+                <div id="map" style="height: 400px;"></div>
+                <input type="hidden" name="latitude" id="latitude">
+                <input type="hidden" name="longitude" id="longitude">
+            </div>
         </div>
+
 
         <div class="flex items-center justify-end mt-4">
             <a class="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800"
