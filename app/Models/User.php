@@ -26,7 +26,9 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
-        'role_id'
+        'role_id',
+        'latitude',
+        'longitude',
     ];
 
     /**
@@ -53,6 +55,6 @@ class User extends Authenticatable
      */
     public function incidentTypes()
     {
-        return $this->belongsToMany(IncidentType::class);
+        return $this->belongsToMany(IncidentType::class, 'user_incident_type');
     }
 }

@@ -27,7 +27,7 @@ var latlng;
 if (navigator.geolocation) {
     navigator.geolocation.getCurrentPosition(
         function (position) {
-            var latlng = L.latLng(
+            latlng = L.latLng(
                 position.coords.latitude,
                 position.coords.longitude
             );
