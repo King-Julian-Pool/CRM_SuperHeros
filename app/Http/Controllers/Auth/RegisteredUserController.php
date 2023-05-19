@@ -50,6 +50,7 @@ class RegisteredUserController extends Controller
                 'email' => ['required', 'string', 'email', 'max:255', 'unique:' . User::class],
                 'password' => ['required', 'confirmed', Rules\Password::defaults()],
                 'role' => ['required', 'string', 'max:255', 'in:commune,hero'],
+                'phone' => ['required', 'string', 'max:255'], // add validation for telephone
                 'incident_types' => ['required', 'array', 'min:1', 'max:3'], // add validation for incident types array
                 'latitude' => 'required',
                 'longitude' => 'required',
@@ -71,6 +72,7 @@ class RegisteredUserController extends Controller
         ]);
 
         if ($role == User::ROLE_HERO) {
+            $user->phone = $request->phone;
             $user->latitude = $request->latitude;
             $user->longitude = $request->longitude;
             if ($request->has('incident_types')) {

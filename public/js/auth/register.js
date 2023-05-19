@@ -4,16 +4,13 @@ window.addEventListener("DOMContentLoaded", (event) => {
 
 const roleRadios = document.querySelectorAll('input[name="role"]');
 const heroContainer = document.querySelector("#hero-container");
-const map = document.querySelector("#map-container");
 
 roleRadios.forEach((radio) => {
     radio.addEventListener("change", (event) => {
         if (event.target.value === "hero") {
             heroContainer.style.display = "block";
-            map.style.display = "inline";
         } else {
             heroContainer.style.display = "none";
-            map.style.display = "none";
         }
     });
 });

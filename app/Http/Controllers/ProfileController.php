@@ -45,6 +45,7 @@ class ProfileController extends Controller
         ]);
 
         if ($request->user()->role_id === User::ROLE_HERO) {
+            $request->user()->phone = $request->phone;
             $request->user()->latitude = $request->latitude;
             $request->user()->longitude = $request->longitude;
             if ($request->has('incident_types')) {

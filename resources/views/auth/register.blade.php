@@ -61,8 +61,18 @@
             <x-input-error :messages="$errors->get('role')" class="mt-2" />
         </div>
 
-        <!-- Incident Types -->
+        <!-- Hero -->
         <div id="hero-container" class="mt-4" style="display:none;">
+
+            <!-- Telephone -->
+            <div class="mt-4">
+                <x-input-label for="phone" :value="__('Téléphone')" />
+                <x-text-input id="phone" class="block mt-1 w-full" type="tel" name="phone" :value="old('phone')"
+                    required autocomplete="tel" />
+                <x-input-error :messages="$errors->get('phone')" class="mt-2" />
+            </div>
+
+            {{-- Types d'incident --}}
             <x-input-label :value="__('Types d\'incident')" />
             @foreach ($incidentTypes as $incidentType)
                 <div class="mt-2">
@@ -75,13 +85,10 @@
             @endforeach
             <x-input-error :messages="$errors->get('incident_types')" class="mt-2" />
 
-
+            {{-- carte --}}
+            <div id="map" style="height: 400px;"></div>
             <input type="hidden" name="latitude" id="latitude">
             <input type="hidden" name="longitude" id="longitude">
-        </div>
-
-        <div id="map-container">
-            <div id="map" style="height: 400px;"></div>
         </div>
 
         <div class="flex items-center justify-end mt-4">
