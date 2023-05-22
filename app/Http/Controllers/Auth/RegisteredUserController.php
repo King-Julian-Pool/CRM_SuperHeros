@@ -32,7 +32,6 @@ class RegisteredUserController extends Controller
      */
     public function store(Request $request): RedirectResponse
     {
-
         $role = null;
         if ($request->role === 'commune') {
             $role = User::ROLE_COMMUNE;

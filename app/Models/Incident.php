@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class IncidentType extends Model
+class Incident extends Model
 {
     use HasFactory;
 
@@ -15,6 +15,10 @@ class IncidentType extends Model
      * @var array<int, string>
      */
     protected $fillable = [
-        'libelle',
+        'commune_id',
+        'incident_type_id',
+        'latitude',
+        'longitude',
+        'is_resolved',
     ];
 }
