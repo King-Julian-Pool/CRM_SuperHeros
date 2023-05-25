@@ -9,7 +9,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const longitude = document.getElementById("longitude");
     const closeModalBtn = document.getElementById("closeModal");
     const map = L.map("map").setView([0, 0], 13);
-    const incidentData = JSON.parse(
+    var incidentData = JSON.parse(
         document.querySelector("[data-incident]").dataset.incident
     );
     const heroesData = JSON.parse(
@@ -23,14 +23,16 @@ document.addEventListener("DOMContentLoaded", function () {
     incidentRows.forEach((row) => {
         row.addEventListener("click", function () {
             if (event.target.classList.contains("detail-incident")) {
-                const incidentData = JSON.parse(
-                    row.getAttribute("data-incident")
-                );
+                incidentData = JSON.parse(row.getAttribute("data-incident"));
                 incidentType.textContent =
                     "Type: " + incidentData.incident_type.libelle;
                 latitude.textContent = incidentData.latitude;
                 longitude.textContent = incidentData.longitude;
-                openModal();
+                openModal(
+                    map,
+                    incidentData,
+                    filterHeroes(incidentData, heroesData)
+                );
             }
         });
     });
@@ -54,16 +56,17 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     initMap(map, incidentData);
-    displayIncidentsAndHeroes(map, incidentData, heroesData);
-
-    filterAndDisplayHeroes(incidentData, heroesData);
 });
 //#endregion
 
 //#region fonctions
-function openModal() {
+function openModal(map, incidentData, heroesData) {
     incidentModal.classList.remove("hidden");
     modalOverlay.classList.remove("hidden");
+
+    displayIncidentsAndHeroes(map, incidentData, heroesData);
+
+    displayHeroes(incidentData, heroesData);
 }
 
 function closeModal() {
@@ -142,15 +145,24 @@ function initMap(map, incidentData) {
 }
 
 function displayIncidentsAndHeroes(map, incidentData, heroesData) {
+    // Clear existing markers from the map
+    map.eachLayer(function (layer) {
+        if (layer instanceof L.Marker || layer instanceof L.Circle) {
+            map.removeLayer(layer);
+        }
+    });
+
     // Créer un marker pour l'incident
     incidentMarker = L.marker([
         incidentData.latitude,
         incidentData.longitude,
     ]).addTo(map);
 
-    // Draw a circle with a radius of 50 kilometers around the incident marker
+    map.setView([incidentData.latitude, incidentData.longitude], 9);
+
+    // Dessiner un cercle avec un rayon de 50 kilomètres autour du marker de l'incident
     L.circle([incidentData.latitude, incidentData.longitude], {
-        radius: 50000, // Radius in meters (50 kilometers = 50000 meters)
+        radius: 50000,
         color: "blue",
         fillColor: "lightblue",
         fillOpacity: 0.4,
@@ -163,9 +175,7 @@ function displayIncidentsAndHeroes(map, incidentData, heroesData) {
         iconAnchor: [15, 42],
     });
 
-    // <span class="material-symbols-outlined">domino_mask</span>;
-
-    // Créer un marker pour chaque hero
+    // Créer un marker pour chaque heros
     heroesData.forEach((hero) => {
         L.marker(L.latLng(hero.latitude, hero.longitude), {
             icon: heroIcon,
@@ -175,12 +185,10 @@ function displayIncidentsAndHeroes(map, incidentData, heroesData) {
     });
 }
 
-function filterAndDisplayHeroes(incidentData, heroesData) {
-    // Clear existing heroes from the table
-    const heroesTableBody = document.getElementById("heroesTableBody");
-    heroesTableBody.innerHTML = "";
+function filterHeroes(incidentData, heroesData) {
+    const filteredHeroes = [];
 
-    // Iterate over the heroes and calculate their distance to the incident
+    // Boucler sur les héros et calculer leur distance par rapport à l'incident
     heroesData.forEach(function (hero) {
         const distance = calculateDistance(
             incidentData.latitude,
@@ -188,26 +196,49 @@ function filterAndDisplayHeroes(incidentData, heroesData) {
             hero.latitude,
             hero.longitude
         );
-        console.log(incidentData);
 
-        // Display the hero in the table only if within 50 km of the incident
-        if (distance <= 50) {
-            const heroRow = document.createElement("tr");
-            const heroNameCell = document.createElement("td");
-            const heroPhoneCell = document.createElement("td");
+        console.log(incidentData.incident_type_id);
 
-            heroNameCell.textContent = hero.name;
-            heroPhoneCell.textContent = hero.phone;
+        // Check if any of the hero's incident_types have an id equal to incidentData.incident_type_id
+        var hasMatchingIncidentType = hero.incident_types.some(function (
+            incidentType
+        ) {
+            return incidentType.id === incidentData.incident_type_id;
+        });
 
-            heroRow.appendChild(heroNameCell);
-            heroRow.appendChild(heroPhoneCell);
-            heroesTableBody.appendChild(heroRow);
+        // Ajouter le hero au tableau filteredHeroes s'il est à moins de 50 km de l'incident
+        if (distance <= 50 && hasMatchingIncidentType) {
+            filteredHeroes.push(hero);
         }
+    });
+
+    return filteredHeroes;
+}
+
+function displayHeroes(incidentData, heroesData) {
+    // Vider le tableau des héros
+    const heroesTableBody = document.getElementById("heroesTableBody");
+    heroesTableBody.innerHTML = "";
+
+    heroesData.forEach(function (hero) {
+        const heroRow = document.createElement("tr");
+        const heroNameCell = document.createElement("td");
+        const heroPhoneCell = document.createElement("td");
+
+        heroNameCell.textContent = hero.name;
+        heroPhoneCell.textContent = hero.phone;
+
+        heroNameCell.classList.add("px-4", "py-2", "bg-gray-100", "text-left");
+        heroPhoneCell.classList.add("px-4", "py-2", "bg-gray-100", "text-left");
+
+        heroRow.appendChild(heroNameCell);
+        heroRow.appendChild(heroPhoneCell);
+        heroesTableBody.appendChild(heroRow);
     });
 }
 
 function calculateDistance(lat1, lon1, lat2, lon2) {
-    const R = 6371; // Radius of the earth in kilometers
+    const R = 6371; // Rayon de la terre en kilomètres
     const dLat = deg2rad(lat2 - lat1);
     const dLon = deg2rad(lon2 - lon1);
     const a =
@@ -217,7 +248,7 @@ function calculateDistance(lat1, lon1, lat2, lon2) {
             Math.sin(dLon / 2) *
             Math.sin(dLon / 2);
     const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-    const distance = R * c; // Distance in kilometers
+    const distance = R * c; // Distance en kilomètres
     return distance;
 }
 

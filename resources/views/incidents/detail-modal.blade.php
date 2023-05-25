@@ -22,8 +22,8 @@
         <table class="mt-4 w-full">
             <thead>
                 <tr>
-                    <th class="px-4 py-2 bg-gray-100">Hero</th>
-                    <th class="px-4 py-2 bg-gray-100">Téléphone</th>
+                    <th class="px-4 py-2 bg-gray-100 text-left">Héros</th>
+                    <th class="px-4 py-2 bg-gray-100 text-left">Téléphone</th>
                 </tr>
             </thead>
             {{-- <tbody>
