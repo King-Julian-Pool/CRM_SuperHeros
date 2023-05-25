@@ -15,15 +15,21 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
+    if (auth()->check()) {
+        return redirect()->route('incidents.map');
+    }
     return view('welcome');
 })->name('/');
 
 
 Route::resource('incidentTypes', App\Http\Controllers\IncidentTypeController::class);
 
+Route::get('incidents', [App\Http\Controllers\IncidentController::class, 'index'])->name('incidents.index');
 Route::get('incidents/map', [App\Http\Controllers\IncidentController::class, 'map'])->name('incidents.map');
 Route::get('incidents/create', [App\Http\Controllers\IncidentController::class, 'create'])->name('incidents.create');
 Route::post('incidents', [App\Http\Controllers\IncidentController::class, 'store'])->name('incidents.store');
+Route::delete('incidents/{incident}', [App\Http\Controllers\IncidentController::class, 'destroy'])->name('incidents.destroy');
+Route::patch('incidents/{incident}/resolve', [App\Http\Controllers\IncidentController::class, 'resolve'])->name('incidents.resolve');
 
 
 Route::middleware('auth')->group(function () {

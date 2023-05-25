@@ -35,11 +35,11 @@ class AuthServiceProvider extends ServiceProvider
         });
 
         Blade::if('hero', function () {
-            return auth()->user()->role_id === User::ROLE_HERO;
+            return auth()->user()->role_id === User::ROLE_HERO || auth()->user()->role_id === User::ROLE_ADMIN;
         });
 
         Blade::if('commune', function () {
-            return auth()->user()->role_id === User::ROLE_COMMUNE;
+            return auth()->user()->role_id === User::ROLE_COMMUNE || auth()->user()->role_id === User::ROLE_ADMIN;
         });
     }
 }

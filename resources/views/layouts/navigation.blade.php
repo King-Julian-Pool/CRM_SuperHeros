@@ -16,11 +16,18 @@
                         {{ __('Carte des incidents') }}
                     </x-nav-link>
                 </div>
-                <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                    <x-nav-link :href="route('incidents.create')" :active="request()->routeIs('incidents.create')">
-                        {{ __('Déclarer un incident') }}
-                    </x-nav-link>
-                </div>
+                @commune
+                    <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
+                        <x-nav-link :href="route('incidents.create')" :active="request()->routeIs('incidents.create')">
+                            {{ __('Déclarer un incident') }}
+                        </x-nav-link>
+                    </div>
+                    <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
+                        <x-nav-link :href="route('incidents.index')" :active="request()->routeIs('incidents.index')">
+                            {{ __('Mes incidents') }}
+                        </x-nav-link>
+                    </div>
+                @endcommune
             </div>
 
             @auth
@@ -84,6 +91,15 @@
                 <x-responsive-nav-link :href="route('incidents.map')" :active="request()->routeIs('incidents.map')">
                     {{ __('Incidents') }}
                 </x-responsive-nav-link>
+
+                @commune
+                    <x-responsive-nav-link :href="route('incidents.create')" :active="request()->routeIs('incidents.create')">
+                        {{ __('Déclarer un incident') }}
+                    </x-responsive-nav-link>
+                    <x-responsive-nav-link :href="route('incidents.index')" :active="request()->routeIs('incidents.index')">
+                        {{ __('Mes incidents') }}
+                    </x-responsive-nav-link>
+                @endcommune
             </div>
 
             <!-- Responsive Settings Options -->

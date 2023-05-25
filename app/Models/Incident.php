@@ -21,4 +21,14 @@ class Incident extends Model
         'longitude',
         'is_resolved',
     ];
+
+    public function incidentType()
+    {
+        return $this->belongsTo(IncidentType::class);
+    }
+
+    public function commune()
+    {
+        return $this->belongsTo(Commune::class);
+    }
 }

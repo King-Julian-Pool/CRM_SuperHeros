@@ -22,10 +22,15 @@
     <label for="longitude" hidden>Longitude:</label>
     <input type="text" name="longitude" id="longitude" hidden>
 
-
-    <div>
-        <div id="map" data-incidents="{{ $incidents }}" data-types="{{ $incidentTypes }}"
-            style="width: 100%; height: 45em;">
+    <div class="py-12">
+        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
+            <div class=" overflow-hidden shadow-sm sm:rounded-lg">
+                <div class="p-6">
+                    <div id="map" data-incidents="{{ $incidents }}" data-types="{{ $incidentTypes }}"
+                        style="width: 100%; height: 45em;">
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </x-app-layout>

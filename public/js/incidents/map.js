@@ -82,8 +82,7 @@ function onMapClick(e) {
     popup
         .setLatLng(e.latlng)
         .setContent(
-            e.latlng.toString() +
-                '<a href="http://www.google.com">Visit Google</a>"'
+            "Latitude: " + e.latlng.lat + "<br>Longitude: " + e.latlng.lng
         )
         .openOn(mymap);
 
@@ -103,7 +102,15 @@ function displayIncidents() {
 
         // Get the incident type by id
         var incidentType = getIncidentTypeById(incident.incident_type_id);
-        marker.addTo(mymap).bindPopup(incidentType.libelle);
+        marker
+            .addTo(mymap)
+            .bindPopup(
+                incidentType.libelle +
+                    "<br> Latitude : " +
+                    incident.latitude +
+                    "<br> Longitude : " +
+                    incident.longitude
+            );
     });
 }
 

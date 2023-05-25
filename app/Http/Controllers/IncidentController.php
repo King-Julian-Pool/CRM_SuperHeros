@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use App\Models\Incident;
 use App\Models\IncidentType;
 use Illuminate\Http\Request;
 use Psy\Readline\Hoa\Console;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Http\RedirectResponse;
 use App\Providers\RouteServiceProvider;
 
@@ -18,12 +20,24 @@ class IncidentController extends Controller
 
     public function index(Request $request)
     {
-        // $incidents = Incident::all();
+        if (!Gate::allows('access-commune')) {
+            return redirect(RouteServiceProvider::HOME);
+        }
+        $incidents = Incident::with('incidentType')
+            ->where('commune_id', auth()->user()->id)
+            ->where('is_resolved', false)
+            ->get();
 
-        // return view('incidents.index', [
-        //     'incidents' => $incidents,
-        // ]);
-        return redirect(RouteServiceProvider::HOME);
+        $heroes = User::with('incidentTypes')
+            ->where('role_id', User::ROLE_HERO)
+            ->whereNotNull('latitude')
+            ->whereNotNull('longitude')
+            ->get();
+
+        return view('incidents.index', [
+            'incidents' => $incidents,
+            'heroes' => $heroes,
+        ]);
     }
 
     public function map()
@@ -38,6 +52,9 @@ class IncidentController extends Controller
 
     public function create()
     {
+        if (!Gate::allows('access-commune')) {
+            return redirect(RouteServiceProvider::HOME);
+        }
         $incidentTypes = IncidentType::all();
         return view('incidents.create', [
             'incidentTypes' => $incidentTypes,
@@ -46,7 +63,6 @@ class IncidentController extends Controller
 
     public function store(Request $request): RedirectResponse
     {
-        dd($request->all());
         $validatedData = $request->validate([
             'commune_id' => 'required',
             'incident_type_id' => 'required',
@@ -56,6 +72,40 @@ class IncidentController extends Controller
 
         $incident = Incident::create($validatedData);
 
-        return redirect(RouteServiceProvider::HOME);
+        return redirect()->route('incidents.index')->with('status', 'incident-ajouté');
+    }
+
+    public function resolve(Incident $incident)
+    {
+
+        try {
+            $incident->is_resolved = true;
+            $incident->save();
+
+            return response()->json([
+                'status' => 'ok',
+            ]);
+        } catch (\Exception $e) {
+
+            return response()->json([
+                'status' => 'error',
+            ]);
+        }
+    }
+
+    public function destroy(Incident $incident)
+    {
+        try {
+            $incident->delete();
+
+            return response()->json([
+                'status' => 'ok',
+            ]);
+        } catch (\Exception $e) {
+
+            return response()->json([
+                'status' => 'error',
+            ]);
+        }
     }
 }
