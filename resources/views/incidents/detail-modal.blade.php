@@ -17,7 +17,7 @@
             <p id="longitude" style='margin-left: 10px;'></p>
         </div>
 
-        <div id="map" style="height: 500px; width: 100%;"></div>
+        <div id="map" style="height: 300px; width: 100%;"></div>
 
         <table class="mt-4 w-full">
             <thead>

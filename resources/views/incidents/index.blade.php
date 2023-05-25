@@ -23,49 +23,51 @@
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6">
-                    <table class="min-w-full divide-y divide-gray-200">
-                        <thead>
-                            <tr>
-                                <th
-                                    class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Type
-                                </th>
-                                <th
-                                    class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Résolution
-                                </th>
-                                <th
-                                    class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Suppression
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach ($incidents as $incident)
-                                <tr data-incident="{{ json_encode($incident) }}"
-                                    data-heroes="{{ json_encode($heroes) }}">
-                                    <td class="px-6 py-4 whitespace-nowrap">
-                                        <button class="text-gray-300 detail-incident">
-                                            {{ $incident->incidentType->libelle }}
-                                        </button>
-                                    </td>
-                                    <td class="px-6 py-4 whitespace-nowrap">
-                                        <button class="text-green-600 resolve-incident"
-                                            data-incident-id="{{ $incident->id }}">
-                                            Marquer comme résolu
-                                        </button>
-                                    </td>
-                                    <td class="px-6 py-4 whitespace-nowrap">
-                                        <button class="text-red-600 delete-incident"
-                                            data-incident-id="{{ $incident->id }}">
-                                            Supprimer
-                                        </button>
-                                    </td>
+                <div class="p-2">
+                    <div class="table-responsive">
+                        <table class="min-w-full divide-y divide-gray-200">
+                            <thead>
+                                <tr>
+                                    <th
+                                        class="px-2 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        Type
+                                    </th>
+                                    <th
+                                        class="px-2 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        Résolution
+                                    </th>
+                                    <th
+                                        class="px-2 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        Suppression
+                                    </th>
                                 </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
+                            </thead>
+                            <tbody>
+                                @foreach ($incidents as $incident)
+                                    <tr data-incident="{{ json_encode($incident) }}"
+                                        data-heroes="{{ json_encode($heroes) }}">
+                                        <td class="px-2 py-4 whitespace-nowrap">
+                                            <button class="text-gray-300 text-left detail-incident">
+                                                {{ $incident->incidentType->libelle }}
+                                            </button>
+                                        </td>
+                                        <td class="px-2 py-4 whitespace-nowrap">
+                                            <button class="text-green-600 text-left resolve-incident"
+                                                data-incident-id="{{ $incident->id }}">
+                                                Marquer comme résolu
+                                            </button>
+                                        </td>
+                                        <td class="px-2 py-4 whitespace-nowrap">
+                                            <button class="text-red-600 text-left delete-incident"
+                                                data-incident-id="{{ $incident->id }}">
+                                                Supprimer
+                                            </button>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
