@@ -38,6 +38,6 @@
             </tbody>
         </table>
 
-        <button id="closeModal" class="mt-4 px-4 py-2 bg-gray-500 text-white rounded-md">Close</button>
+        <button id="closeModal" class="mt-4 px-4 py-2 bg-gray-500 text-white rounded-md">Fermer</button>
     </div>
 </div>
